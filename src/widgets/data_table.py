@@ -7,6 +7,7 @@ from typing import List
 from models import Video
 from database import DatabaseService
 from config import config
+from utils import is_today, is_within_last_two_days
 
 class CustomDataTable(DataTable):
     BINDINGS = [
@@ -33,9 +34,9 @@ class CustomDataTable(DataTable):
 
         for video in videos:
             # Color coding based on publish date
-            if video.published_at.date() == date.today():
+            if is_today(video.published_at):
                 title = Text(video.title, style="bold red")
-            elif video.published_at.date() >= date.today() - timedelta(days=2):
+            elif is_within_last_two_days(video.published_at):
                 title = Text(video.title, style="bold green")
             else:
                 title = video.title

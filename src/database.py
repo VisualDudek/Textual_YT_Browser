@@ -4,6 +4,9 @@ from dataclasses import fields
 from typing import Dict, List
 from models import Video
 from config import config
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 class DatabaseService:
     def __init__(self):
@@ -11,21 +14,21 @@ class DatabaseService:
         
     def connect(self) -> MongoClient:
         """Establish MongoDB connection"""
-        print(f"Connecting to MongoDB at {config.mongo_uri}...")
+        logging.info(f"Connecting to MongoDB at {config.mongo_uri}...")
         self.client = MongoClient(
             config.mongo_uri, 
             serverSelectionTimeoutMS=config.connection_timeout_ms, 
             server_api=ServerApi('1')
         )
         self.client.admin.command('ping')
-        print("Successfully connected to MongoDB.")
+        logging.info("Successfully connected to MongoDB.")
         return self.client
         
     def disconnect(self):
         """Close MongoDB connection"""
         if self.client:
             self.client.close()
-            print("\nMongoDB connection closed.")
+            logging.info("MongoDB connection closed.")
             
     def load_videos(self) -> Dict[str, List[Video]]:
         """Load video data from MongoDB"""

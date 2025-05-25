@@ -1,5 +1,6 @@
 from textual.widgets import ListView, ListItem, Label
 from textual.binding import Binding
+from models import Video
 from utils import count_new_videos
 from textual.message import Message
 
@@ -22,9 +23,19 @@ class CustomListView(ListView):
     
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.data = {}
+        self.data: dict[str, list[Video]] = {}
+
+    def set_data(self, data: dict[str, list[Video]]):
+        """
+        Set the data for the list view.
         
-    def set_data(self, data):
+        Args:
+            data (dict): A dictionary mapping channel names (str) to lists of videos.
+        
+        Side Effects:
+            - Updates the internal `data` attribute with the provided dictionary.
+            - Calls `update_data` to refresh the list view with the new data.
+        """
         self.data = data
         self.update_data()
         
