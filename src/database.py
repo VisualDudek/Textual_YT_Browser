@@ -1,5 +1,6 @@
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
+from pymongo.errors import DuplicateKeyError
 from dataclasses import fields
 from typing import Dict, List
 from models import Video
@@ -65,4 +66,22 @@ class DatabaseService:
             {"$set": {"seen": seen_status}},
         )
         
+        self.disconnect()
+
+    def save_videos(self, videos: list[dict]):
+        """Save video data to MongoDB"""
+        self.connect()
+
+        db = self.client[config.mongo_database_name]
+        video_collection = db[config.mongo_collection_name]
+
+        for video in videos:
+            try:
+                video_collection.insert_one(video)
+                print(f"Successfully saved video to MongoDB: {video['title']} (ID: {video['video_id']})")
+            except DuplicateKeyError:
+                print(f"Video already exists in MongoDB (ID: {video['video_id']}). Skipping.")
+            except Exception as e:
+                print(f"An error occurred while saving video {video.get('title', 'N/A')} to MongoDB: {e}")
+
         self.disconnect()
