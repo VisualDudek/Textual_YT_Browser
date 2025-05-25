@@ -167,6 +167,14 @@ def get_last_videos(channel_id, max_results=3) -> list[dict]:
             published_at_str = item['snippet']['publishedAt']
             channel_id = item['snippet']['channelId']
             channel_title = item['snippet']['channelTitle']
+        
+        elif item['snippet']['type'] == 'playlistItem':
+            video_id = item['contentDetails']['playlistItem']['resourceId']['videoId']
+            video_title = item['snippet']['title']
+            published_at_str = item['snippet']['publishedAt']
+            channel_id = item['snippet']['channelId']
+            channel_title = item['snippet']['channelTitle']
+
             
             # Construct URL
             video_url = f"https://www.youtube.com/watch?v={video_id}"
