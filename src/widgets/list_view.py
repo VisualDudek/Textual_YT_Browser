@@ -1,0 +1,45 @@
+from textual.widgets import ListView, ListItem, Label
+from textual.binding import Binding
+from utils import count_new_videos
+
+class MyListItem(ListItem):
+    def __init__(self, channel_name, videos):
+        self.data = channel_name
+        label = channel_name
+        number = count_new_videos(videos)
+        if number > 0:
+            label = f"{channel_name} ({number})"
+        super().__init__(Label(label))
+
+class CustomListView(ListView):
+    BINDINGS = [
+        Binding("enter", "select_cursor", "Select", show=False),
+        Binding("k", "cursor_up", "Cursor up", show=False),
+        Binding("j", "cursor_down", "Cursor down", show=False),
+        Binding("r", "load_data_from_db", "Load data from DB", show=True),
+    ]
+    
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.data = {}
+        
+    def set_data(self, data):
+        self.data = data
+        self.update_data()
+        
+    def update_data(self):
+        self.clear()
+        for channel_name, videos in self.data.items():
+            self.append(MyListItem(channel_name, videos))
+            
+    def action_load_data_from_db(self):
+        from database import DatabaseService
+        db_service = DatabaseService()
+        new_data = db_service.load_videos()
+        self.set_data(new_data)
+        # Emit event to update main app data
+        self.post_message(self.DataUpdated(new_data))
+        
+    class DataUpdated:
+        def __init__(self, data):
+            self.data = data
