@@ -15,6 +15,13 @@ from pymongo.server_api import ServerApi
 from bson import ObjectId
 from pathlib import Path
 
+# Load environment variables from .env file
+load_dotenv()  
+
+# --- MongoDB Configuration ---
+MONGO_URI = os.getenv("MONGO_URI")
+MONGO_DATABASE_NAME = "youtube_data"
+MONGO_COLLECTION_NAME = "videos"     
 
 DATA = None
 COLUMN_HEADERS = ("Time", "Title", "Duration")
@@ -235,13 +242,6 @@ def load_pickle_data():
     
 
 if __name__ == "__main__":
-    # Load environment variables from .env file
-    load_dotenv()  
-
-    # --- MongoDB Configuration ---
-    MONGO_URI = os.getenv("MONGO_URI")
-    MONGO_DATABASE_NAME = "youtube_data"
-    MONGO_COLLECTION_NAME = "videos"     
 
     # --- Get init data logic ---
     file_path = Path("data.pkl")
