@@ -1,6 +1,7 @@
 from textual.widgets import ListView, ListItem, Label
 from textual.binding import Binding
 from utils import count_new_videos
+from textual.message import Message
 
 class MyListItem(ListItem):
     def __init__(self, channel_name, videos):
@@ -39,7 +40,8 @@ class CustomListView(ListView):
         self.set_data(new_data)
         # Emit event to update main app data
         self.post_message(self.DataUpdated(new_data))
-        
-    class DataUpdated:
-        def __init__(self, data):
+
+    class DataUpdated(Message):
+        def __init__(self, data) -> None:
             self.data = data
+            super().__init__()
