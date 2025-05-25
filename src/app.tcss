@@ -1,0 +1,6 @@
+CustomListView {
+    width: 2fr;
+}
+CustomDataTable {
+    width: 9fr;
+}
