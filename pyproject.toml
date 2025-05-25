@@ -4,4 +4,14 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "pymongo[srv]==3.12",
+    "python-dotenv>=1.1.0",
+    "rich>=14.0.0",
+    "textual>=3.2.0",
+]
+
+[dependency-groups]
+dev = [
+    "textual-dev>=1.7.0",
+]
