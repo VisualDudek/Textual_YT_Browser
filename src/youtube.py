@@ -16,6 +16,12 @@ def load_youtube_config(file_path: str) -> dict:
     return yt_config
 
 
+def save_youtube_config(file_path: str, data: dict):
+    """Save YouTube configuration to a YAML file."""
+    with open(file_path, "w") as file:
+        yaml.dump(data, file, sort_keys=False)
+
+
 def get_video_id_from_url(url: str) -> str | None:
     """
     Extracts the YouTube video ID from various URL formats.
@@ -56,6 +62,7 @@ def get_video_id_from_url(url: str) -> str | None:
             
     print(f"Could not extract video ID from URL: {url}")
     return None
+
 
 def get_channel_id_from_video_url(video_url: str) -> tuple[str, str] | None:
     """
@@ -106,7 +113,28 @@ def get_channel_id_from_video_url(video_url: str) -> tuple[str, str] | None:
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
         return None
-    
+
+
+def add_channel_to_config(channel_id: str, channel_title: str, config_file: str):
+    """
+    Adds a new channel ID and title to the YouTube configuration file.
+    """
+    yt_config = load_youtube_config(config_file)
+
+    # Check if the channel already exists
+    if channel_id in yt_config.get('channels', {}).values():
+        print(f"Channel ID {channel_id} [{channel_title}] already exists in the configuration.")
+        return
+
+    # Add the new channel
+    yt_config.setdefault('channels', {})[channel_title] = channel_id
+
+    # Sort the channels alphabetically
+    yt_config['channels'] = dict(sorted(yt_config['channels'].items(), key=lambda item: item[0].lower()))
+
+    # Save the updated config back to the YAML file
+    save_youtube_config(config_file, yt_config)
+    print(f"Added new channel: [{channel_title}] with ID: {channel_id}")
 
 # --- Main Execution ---
 if __name__ == '__main__':
@@ -128,21 +156,4 @@ if __name__ == '__main__':
     else:
         print("\nFailed to retrieve Channel ID.")
 
-    # # Load the YAML configuration file
-    # config = load_yaml(YT_CONFIG)
-    # print(f"Loaded configuration from {YT_CONFIG}.")
-
-    # # Check if the config.channels has retrieved channel ID
-    # if channel_id in config['channels'].values():
-    #     console.print(f"Channel ID {channel_id} [bold magenta]{channel_title}[/bold magenta] already exists in the configuration.")
-    # else:
-    #     # Add the new channel ID to the config
-    #     config['channels'][channel_title] = channel_id
-
-    #     # Sort the channels alphabetically
-    #     config['channels'] = dict(sorted(config['channels'].items(), key=lambda item: item[0].lower()))
-
-    #     # Save the updated config back to the YAML file
-    #     with open(YT_CONFIG, 'w') as file:
-    #         yaml.dump(config, file, sort_keys=False)
-    #     console.print(f"Added new channel: [bold magenta]{channel_title}[/bold magenta] with ID: {channel_id}")
+    add_channel_to_config(channel_id, channel_title, config.yt_config_file)
