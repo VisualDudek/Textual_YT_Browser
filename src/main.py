@@ -15,16 +15,9 @@ from pymongo.server_api import ServerApi
 from bson import ObjectId
 from pathlib import Path
 
-# Load environment variables from .env file
-load_dotenv()  
-
-# --- MongoDB Configuration ---
-MONGO_URI = os.getenv("MONGO_URI")
-MONGO_DATABASE_NAME = "youtube_data"
-MONGO_COLLECTION_NAME = "videos"     
+from config import config
 
 DATA = None
-COLUMN_HEADERS = ("Time", "Title", "Duration")
 
 
 # nice trick with self.data and super() init Label
@@ -80,7 +73,7 @@ class CustomDataTable(DataTable):
 
     def on_mount(self) -> None:
         self.cursor_type = "row"
-        self.add_columns(*COLUMN_HEADERS)
+        self.add_columns(*config.column_headers)
         # self.add_rows(ROWS)
         self.log(self.columns)
         self.cursor_foreground_priority = 'renderable'
@@ -115,9 +108,9 @@ class CustomDataTable(DataTable):
 
         self.videos[row].seen = not self.videos[row].seen
 
-        mongo_client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=5000, server_api= ServerApi('1')) # Timeout for connection
-        db = mongo_client[MONGO_DATABASE_NAME]
-        video_collection = db[MONGO_COLLECTION_NAME]
+        mongo_client = MongoClient(config.mongo_uri, serverSelectionTimeoutMS=5000, server_api= ServerApi('1')) # Timeout for connection
+        db = mongo_client[config.mongo_database_name]
+        video_collection = db[config.mongo_collection_name]
 
         video_collection.update_one(
             {"_id": id},
@@ -188,14 +181,14 @@ def load_data_from_db():
     # with open("data.pkl", "rb") as f:
     #     loaded_data = pickle.load(f)
 
-    print(f"Connecting to MongoDB at {MONGO_URI}...")
-    mongo_client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=5000, server_api= ServerApi('1')) # Timeout for connection
+    print(f"Connecting to MongoDB at {config.mongo_uri}...")
+    mongo_client = MongoClient(config.mongo_uri, serverSelectionTimeoutMS=5000, server_api= ServerApi('1')) # Timeout for connection
     # Ping to confirm connection
     mongo_client.admin.command('ping') 
     print("Successfully connected to MongoDB.")
 
-    db = mongo_client[MONGO_DATABASE_NAME]
-    video_collection = db[MONGO_COLLECTION_NAME]
+    db = mongo_client[config.mongo_database_name]
+    video_collection = db[config.mongo_collection_name]
 
     # loaded_data = list(db.latest_ten.find())
     loaded_data = list(db.latest_20.find())
@@ -231,11 +224,11 @@ class Video:
     seen: bool = field(default=False)
 
 def pickle_data(data):
-    with open("data.pkl", "wb") as f:
+    with open(config.default_pickle_file, "wb") as f:
         pickle.dump(data, f)
 
 def load_pickle_data():
-    with open("data.pkl", "rb") as f:
+    with open(config.default_pickle_file, "rb") as f:
         loaded_data = pickle.load(f)
 
     return loaded_data
@@ -244,7 +237,7 @@ def load_pickle_data():
 if __name__ == "__main__":
 
     # --- Get init data logic ---
-    file_path = Path("data.pkl")
+    file_path = Path(config.default_pickle_file)
     if file_path.exists():
         DATA = load_pickle_data()
     else:
