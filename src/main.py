@@ -51,8 +51,9 @@ class MyApp(App):
         if event.item is not None:
             data_table = self.query_one(CustomDataTable)
             data_table.update_table(event.item.data, self.data[event.item.data])
-            
-    def on_custom_list_view_data_updated(self, event):
+
+    @on(CustomListView.DataUpdated) 
+    def data_updated(self, event):
         self.data = event.data
 
 def main():
