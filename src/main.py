@@ -29,6 +29,8 @@ class MyApp(App):
             
     def on_mount(self):
         self.query_one(CustomListView).set_data(self.data)
+        self.query_one(CustomListView).focus()
+        self.query_one(CustomListView).index = 0
 
     def action_exit(self):
         pickle_data(self.data)
