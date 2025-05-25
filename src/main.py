@@ -10,14 +10,7 @@ from utils import get_initial_data, pickle_data
 from models import Video
 
 class MyApp(App):
-    CSS = """
-    CustomListView {
-        width: 2fr;
-    }
-    CustomDataTable {
-        width: 9fr;
-    }
-    """
+    CSS_PATH = "app.tcss"
 
     BINDINGS = [
         Binding("q", "exit", "Exit"),
