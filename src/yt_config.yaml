@@ -1,38 +1,109 @@
 channels:
-  anthonywritescode: UC46xhU1EH7aywEgvA9syS3w
-  ArjanCodes: UCVhQ2NnY5Rskt6UjCUkJ_DA
-  Beyond Fireship: UC2Xd-TjJByJyK2w1zNwY0zQ
-  ByteByteGo: UCZgt6AzoyjslHTC9dz0UoTw
-  Christian Lempa: UCZNhwA1B5YqiY1nLzmM0ZRg
-  Cloud Native Computing Foundation: UCvqbFHwN-nwalWPjPUKpvTA
-  CloudHeroes - Video: UCymCJotX9RRQjgdAzNzoZsQ
-  Computerphile: UC9-y-6csu5WGm29I7JiwpnA
-  Corey Schafer: UCCezIgC97PvUuR4_gbFUs5g
-  DevOps Toolbox: UCYeiozh-4QwuC1sjgCmB92w
-  Eric Roby: UCFxwS8HIGH5_ut1fk0PNAHw
-  Fireship: UCsBjURrPoezykLs9EqgamOA
-  GitHub: UC7c3Kb6jYCRj4JOHHZTxKsQ
-  hello roman: UCq8XmOMtrUCb8FcFHQEd8_g
-  Jeremy Howard: UCX7Y2qWriXpqocG97SFW2OQ
-  Justin Sung: UC2Zs9v2hL2qZZ7vsAENsg4w
-  Lex Fridman: UCSHZKyawb77ixDdsGog4iWA
-  Mateusz Chrobok: UCTTZqMWBvLsUYqYwKTdjvkw
-  "Maximilian Schwarzm\xFCller": UCNxUdsuH8-kEGIwSD0r8RhQ
-  "Maximilian Schwarzm\xFCller Ext.": UCzgpZFMMLOew2u0x2BvhsXw
-  mCoding: UCaiL2GDNpLYH6Wokkk1VNcg
-  MongoDB: UCK_m2976Yvbx-TyDLw7n1WA
-  Nicole van der Hoeven: UCrmQZ9HHnJ2qpd6udc8iYYw
-  OpenAI: UCXZCJLdBC09xxGZ6gcdrc6A
-  Postman: UCocudCGVb3MmhWQ1aoIgUQw
-  PyCon US: UCMjMBMGt0WJQLeluw6qNJuA
-  Real Python: UCI0vQvr9aFn27yR6Ej6n5UA
-  SysOps / DevOps Polska: UCQ8D7kwvZJxQdy70vYZCf7w
-  Tech With Tim: UC4JX40jDee_tINbkjycV4Sg
-  TechWorld with Nana: UCdngmbVKX1Tgre699-XLlUA
-  ThePrimeagen: UC8ENHE5xdFSwx71u3fDH5Xw
-  ThePrimeTime: UCUyeluBRhGPCW4rPe_UvBZQ
-  TJ DeVries: UCd3dNckv1Za2coSaHGHl5aA
-  Visual Studio Code: UCs5Y5_7XK8HLDX0SLNwkd3w
-  What The Func? w/ Ed Zynda: UC0Wu-J4_SoFOYVKA8JRuRRg
-  Zsolt's Visual Personal Knowledge Management: UCC0gns4a9fhVkGkngvSumAQ
-results: 10
+- channel_id: UC46xhU1EH7aywEgvA9syS3w
+  channel_title: anthonywritescode
+  uploads_id: UU46xhU1EH7aywEgvA9syS3w
+- channel_id: UCVhQ2NnY5Rskt6UjCUkJ_DA
+  channel_title: ArjanCodes
+  uploads_id: UUVhQ2NnY5Rskt6UjCUkJ_DA
+- channel_id: UC2Xd-TjJByJyK2w1zNwY0zQ
+  channel_title: Beyond Fireship
+  uploads_id: UU2Xd-TjJByJyK2w1zNwY0zQ
+- channel_id: UCZgt6AzoyjslHTC9dz0UoTw
+  channel_title: ByteByteGo
+  uploads_id: UUZgt6AzoyjslHTC9dz0UoTw
+- channel_id: UCZNhwA1B5YqiY1nLzmM0ZRg
+  channel_title: Christian Lempa
+  uploads_id: UUZNhwA1B5YqiY1nLzmM0ZRg
+- channel_id: UCvqbFHwN-nwalWPjPUKpvTA
+  channel_title: CNCF [Cloud Native Computing Foundation]
+  uploads_id: UUvqbFHwN-nwalWPjPUKpvTA
+- channel_id: UCymCJotX9RRQjgdAzNzoZsQ
+  channel_title: CloudHeroes - Video
+  uploads_id: UUymCJotX9RRQjgdAzNzoZsQ
+- channel_id: UC9-y-6csu5WGm29I7JiwpnA
+  channel_title: Computerphile
+  uploads_id: UU9-y-6csu5WGm29I7JiwpnA
+- channel_id: UCCezIgC97PvUuR4_gbFUs5g
+  channel_title: Corey Schafer
+  uploads_id: UUCezIgC97PvUuR4_gbFUs5g
+- channel_id: UCYeiozh-4QwuC1sjgCmB92w
+  channel_title: DevOps Toolbox
+  uploads_id: UUYeiozh-4QwuC1sjgCmB92w
+- channel_id: UCFxwS8HIGH5_ut1fk0PNAHw
+  channel_title: Eric Roby
+  uploads_id: UUFxwS8HIGH5_ut1fk0PNAHw
+- channel_id: UCsBjURrPoezykLs9EqgamOA
+  channel_title: Fireship
+  uploads_id: UUsBjURrPoezykLs9EqgamOA
+- channel_id: UC7c3Kb6jYCRj4JOHHZTxKsQ
+  channel_title: GitHub
+  uploads_id: UU7c3Kb6jYCRj4JOHHZTxKsQ
+- channel_id: UCq8XmOMtrUCb8FcFHQEd8_g
+  channel_title: hello roman
+  uploads_id: UUq8XmOMtrUCb8FcFHQEd8_g
+- channel_id: UCX7Y2qWriXpqocG97SFW2OQ
+  channel_title: Jeremy Howard
+  uploads_id: UUX7Y2qWriXpqocG97SFW2OQ
+- channel_id: UC2Zs9v2hL2qZZ7vsAENsg4w
+  channel_title: Justin Sung
+  uploads_id: UU2Zs9v2hL2qZZ7vsAENsg4w
+- channel_id: UCSHZKyawb77ixDdsGog4iWA
+  channel_title: Lex Fridman
+  uploads_id: UUSHZKyawb77ixDdsGog4iWA
+- channel_id: UCTTZqMWBvLsUYqYwKTdjvkw
+  channel_title: Mateusz Chrobok
+  uploads_id: UUTTZqMWBvLsUYqYwKTdjvkw
+- channel_id: UCNxUdsuH8-kEGIwSD0r8RhQ
+  channel_title: "Maximilian Schwarzm\xFCller"
+  uploads_id: UUNxUdsuH8-kEGIwSD0r8RhQ
+- channel_id: UCzgpZFMMLOew2u0x2BvhsXw
+  channel_title: "Maximilian Schwarzm\xFCller Extended"
+  uploads_id: UUzgpZFMMLOew2u0x2BvhsXw
+- channel_id: UCaiL2GDNpLYH6Wokkk1VNcg
+  channel_title: mCoding
+  uploads_id: UUaiL2GDNpLYH6Wokkk1VNcg
+- channel_id: UCK_m2976Yvbx-TyDLw7n1WA
+  channel_title: MongoDB
+  uploads_id: UUK_m2976Yvbx-TyDLw7n1WA
+- channel_id: UCrmQZ9HHnJ2qpd6udc8iYYw
+  channel_title: Nicole van der Hoeven
+  uploads_id: UUrmQZ9HHnJ2qpd6udc8iYYw
+- channel_id: UCXZCJLdBC09xxGZ6gcdrc6A
+  channel_title: OpenAI
+  uploads_id: UUXZCJLdBC09xxGZ6gcdrc6A
+- channel_id: UCocudCGVb3MmhWQ1aoIgUQw
+  channel_title: Postman
+  uploads_id: UUocudCGVb3MmhWQ1aoIgUQw
+- channel_id: UCMjMBMGt0WJQLeluw6qNJuA
+  channel_title: PyCon US
+  uploads_id: UUMjMBMGt0WJQLeluw6qNJuA
+- channel_id: UCI0vQvr9aFn27yR6Ej6n5UA
+  channel_title: Real Python
+  uploads_id: UUI0vQvr9aFn27yR6Ej6n5UA
+- channel_id: UCQ8D7kwvZJxQdy70vYZCf7w
+  channel_title: SysOps / DevOps Polska
+  uploads_id: UUQ8D7kwvZJxQdy70vYZCf7w
+- channel_id: UC4JX40jDee_tINbkjycV4Sg
+  channel_title: Tech With Tim
+  uploads_id: UU4JX40jDee_tINbkjycV4Sg
+- channel_id: UCdngmbVKX1Tgre699-XLlUA
+  channel_title: TechWorld with Nana
+  uploads_id: UUdngmbVKX1Tgre699-XLlUA
+- channel_id: UC8ENHE5xdFSwx71u3fDH5Xw
+  channel_title: ThePrimeagen
+  uploads_id: UU8ENHE5xdFSwx71u3fDH5Xw
+- channel_id: UCUyeluBRhGPCW4rPe_UvBZQ
+  channel_title: ThePrimeTime
+  uploads_id: UUUyeluBRhGPCW4rPe_UvBZQ
+- channel_id: UCd3dNckv1Za2coSaHGHl5aA
+  channel_title: TJ DeVries
+  uploads_id: UUd3dNckv1Za2coSaHGHl5aA
+- channel_id: UCs5Y5_7XK8HLDX0SLNwkd3w
+  channel_title: Visual Studio Code
+  uploads_id: UUs5Y5_7XK8HLDX0SLNwkd3w
+- channel_id: UC0Wu-J4_SoFOYVKA8JRuRRg
+  channel_title: What The Func? w/ Ed Zynda
+  uploads_id: UU0Wu-J4_SoFOYVKA8JRuRRg
+- channel_id: UCC0gns4a9fhVkGkngvSumAQ
+  channel_title: Zsolt's Visual Personal Knowledge Management
+  uploads_id: UUC0gns4a9fhVkGkngvSumAQ
