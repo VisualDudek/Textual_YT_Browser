@@ -26,17 +26,8 @@ class VideoYT:
     seen: bool = field(default=False)
 
     def to_dict(self) -> Dict[str, str]:
-        """Convert VideoYT instance to dictionary"""
-        return {
-            'title': self.title,
-            'video_id': self.video_id,
-            'published_at': self.published_at,
-            'channel_id': self.channel_id,
-            'channel_title': self.channel_title,
-            'url': self.url,
-            'duration': self.duration,
-            'seen': self.seen,
-        }
+        """Convert VideoYT instance to dictionary using field names"""
+        return {field: getattr(self, field) for field in self.__dataclass_fields__}
 
 @dataclass
 class YTConfig:
