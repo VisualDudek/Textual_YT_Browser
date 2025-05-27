@@ -1,6 +1,7 @@
 from datetime import datetime
 import re
 import yaml
+import logging
 
 from urllib.parse import parse_qs, urlparse
 from config import config
@@ -10,6 +11,7 @@ from rich.prompt import Prompt
 from rich.console import Console
 from models import YTChannel, VideoYT
 
+logging.basicConfig(level=logging.INFO)
 
 def load_youtube_config(file_path: str) -> dict:
     """Load YouTube configuration from a YAML file."""
@@ -40,7 +42,7 @@ def get_video_duration(video: VideoYT) -> str:
         duration = response["items"][0]["contentDetails"]["duration"]
         return duration
     except HttpError as e:
-        print(f"An error occurred: {e}")
+        logging.error(f"An error occurred while fetching video duration: {e}")
         return "N/A"
 
 
