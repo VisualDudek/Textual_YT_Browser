@@ -8,12 +8,14 @@ from models import Video
 from database import DatabaseService
 from config import config
 from utils import is_today, is_within_last_two_days
+from youtube import get_video_duration
 
 class CustomDataTable(DataTable):
     BINDINGS = [
         Binding("k", "cursor_up", "Cursor up", show=True),
         Binding("j", "cursor_down", "Cursor down", show=True),
         Binding("t", "style_row", "Toggle row", show=True),
+        Binding("i", "get_video_info", "Get video info", show=True),
     ]
 
     def __init__(self, **kwargs):
@@ -23,7 +25,10 @@ class CustomDataTable(DataTable):
 
     def on_mount(self) -> None:
         self.cursor_type = "row"
-        self.add_columns(*config.column_headers)
+        # self.add_columns(*config.column_headers)
+        self.add_column("Published At", key="published_at")
+        self.add_column("Title", key="title")
+        self.add_column("Duration", key="duration")
         self.cursor_foreground_priority = 'renderable'
 
     def update_table(self, key: str, videos: List[Video]):
@@ -47,6 +52,28 @@ class CustomDataTable(DataTable):
             
             row = (video.published_at, title, video.duration)
             self.add_row(*row, key=video.video_id)
+
+    def action_get_video_info(self):
+        """Get detailed information about the current row's video"""
+        if not self.videos:
+            return
+            
+        row = self.cursor_row
+        if row >= len(self.videos):
+            return
+            
+        video = self.videos[row]
+        video.duration = get_video_duration(video)
+
+        info = f"Title: {video.title}\nPublished At: {video.published_at}\nDuration: {video.duration}\nSeen: {'Yes' if video.seen else 'No'}"
+        
+        self.app.notify(info, title="Video Information")
+
+        # Refresh the table with updated duration
+        self.update_cell(
+            row_key=video.video_id,
+            column_key="duration",
+            value=video.duration)
 
     def action_style_row(self):
         """Toggle the seen status of the current row's video"""
