@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Dict, List, Any
 from config import config
 from models import Video
+from models import VideoYT
 
 def is_within_last_two_days(dt: datetime) -> bool:
     """Check if datetime is within the last two days"""
@@ -29,10 +30,10 @@ def load_pickle_data() -> Dict[str, List[Any]]:
     with open(config.default_pickle_file, "rb") as f:
         return pickle.load(f)
 
-def get_initial_data() -> Dict[str, List[Video]]:
+def get_initial_data() -> Dict[str, List[VideoYT]]:
     """Get initial data from pickle file or database"""
     from database import DatabaseService
-    
+
     file_path = Path(config.default_pickle_file)
     if file_path.exists():
         return load_pickle_data()
