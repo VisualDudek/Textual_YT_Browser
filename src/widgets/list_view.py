@@ -36,7 +36,7 @@ class CustomListView(ListView):
             - Updates the internal `data` attribute with the provided dictionary.
             - Calls `update_data` to refresh the list view with the new data.
         """
-        self.data = data
+        self.data: dict[str, list[Video]] = data
         self.update_data()
         
     def update_data(self):

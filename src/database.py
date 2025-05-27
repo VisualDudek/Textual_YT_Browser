@@ -31,24 +31,24 @@ class DatabaseService:
             self.client.close()
             logging.info("MongoDB connection closed.")
             
-    def load_videos(self) -> Dict[str, List[Video]]:
+    def load_videos(self) -> Dict[str, List[VideoYT]]:
         """Load video data from MongoDB"""
         self.connect()
         
         db = self.client[config.mongo_database_name]
         loaded_data = list(db.latest_20.find())
 
-        data: dict[str, List[Video]] = {}
-        field_names = {f.name for f in fields(Video)}
-        
+        data: dict[str, List[VideoYT]] = {}
+        field_names = {f.name for f in fields(VideoYT)}
+
         for item in loaded_data:
             channel_name: str = item["_id"]
-            videos: List[Video] = []
+            videos: List[VideoYT] = []
 
             for video in item["latest_videos"]:
                 filtered_data = {k: v for k, v in video.items() if k in field_names}
-                videos.append(Video(**filtered_data))
-                
+                videos.append(VideoYT(**filtered_data))
+
             data[channel_name] = videos
             
         self.disconnect()

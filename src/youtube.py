@@ -1,6 +1,7 @@
 from datetime import datetime
 import re
 import yaml
+import logging
 
 from urllib.parse import parse_qs, urlparse
 from config import config
@@ -10,6 +11,7 @@ from rich.prompt import Prompt
 from rich.console import Console
 from models import YTChannel, VideoYT
 
+logging.basicConfig(level=logging.INFO)
 
 def load_youtube_config(file_path: str) -> dict:
     """Load YouTube configuration from a YAML file."""
@@ -22,6 +24,26 @@ def save_youtube_config(file_path: str, data: dict):
     """Save YouTube configuration to a YAML file."""
     with open(file_path, "w") as file:
         yaml.dump(data, file, sort_keys=False)
+
+def get_video_duration(video: VideoYT) -> str:
+    """Call YouTube API to get the duration of a video."""
+    youtube = build(
+        config.youtube_api_service_name, 
+        config.youtube_api_version, 
+        developerKey=config.youtube_api_key,
+        )
+
+    try:
+        request = youtube.videos().list(
+            part="contentDetails",
+            id=video.video_id
+        )
+        response = request.execute()
+        duration = response["items"][0]["contentDetails"]["duration"]
+        return duration
+    except HttpError as e:
+        logging.error(f"An error occurred while fetching video duration: {e}")
+        return "N/A"
 
 
 def get_video_id_from_url(url: str) -> str | None:
