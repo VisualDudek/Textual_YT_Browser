@@ -19,5 +19,20 @@ class Config:
     default_pickle_file: str = "data.pkl"
     connection_timeout_ms: int = 5000
 
+    # YT API settings
+    # FIXME: Raise an error if the API key is not set
+    youtube_api_key: str = os.getenv("YT_API_KEY")
+    youtube_api_service_name: str = "youtube"
+    youtube_api_version: str = "v3"
+
+    # YT channel config
+    yt_config_file: str = "./src/yt_config.yaml"
+
+    def __post_init__(self):
+        if not self.mongo_uri:
+            raise ValueError("MONGO_URI environment variable is not set.")
+        if not self.youtube_api_key:
+            raise ValueError("YT_API_KEY environment variable is not set.")
+
 # Create a global config instance
 config = Config()

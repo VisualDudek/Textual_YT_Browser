@@ -18,8 +18,8 @@ class MyApp(App):
     ]
     
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.data = get_initial_data()
+        super().__init__(**kwargs) # Does it need to be here?
+        self.data = get_initial_data() # Load initial data from pickle file or database
     
     def compose(self):
         yield Footer()
