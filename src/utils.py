@@ -29,7 +29,7 @@ def load_pickle_data() -> Dict[str, List[Any]]:
     with open(config.default_pickle_file, "rb") as f:
         return pickle.load(f)
 
-def get_initial_data() -> Dict[str, List[Any]]:
+def get_initial_data() -> Dict[str, List[Video]]:
     """Get initial data from pickle file or database"""
     from database import DatabaseService
     
