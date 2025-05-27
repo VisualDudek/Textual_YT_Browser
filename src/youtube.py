@@ -23,6 +23,26 @@ def save_youtube_config(file_path: str, data: dict):
     with open(file_path, "w") as file:
         yaml.dump(data, file, sort_keys=False)
 
+def get_video_duration(video: VideoYT) -> str:
+    """Call YouTube API to get the duration of a video."""
+    youtube = build(
+        config.youtube_api_service_name, 
+        config.youtube_api_version, 
+        developerKey=config.youtube_api_key,
+        )
+
+    try:
+        request = youtube.videos().list(
+            part="contentDetails",
+            id=video.video_id
+        )
+        response = request.execute()
+        duration = response["items"][0]["contentDetails"]["duration"]
+        return duration
+    except HttpError as e:
+        print(f"An error occurred: {e}")
+        return "N/A"
+
 
 def get_video_id_from_url(url: str) -> str | None:
     """
