@@ -13,6 +13,8 @@ class Video:
     url: str = field(default="N/A")
     duration: str = field(default="N/A")
     seen: bool = field(default=False)
+    has_summary: bool = field(default=False)
+    summary: str = field(default="")
 
 @dataclass
 class VideoYT:
@@ -24,6 +26,8 @@ class VideoYT:
     url: str = field(default="N/A")
     duration: str = field(default="N/A")
     seen: bool = field(default=False)
+    has_summary: bool = field(default=False)
+    summary: str = field(default="")
 
     def to_dict(self) -> Dict[str, str]:
         """Convert VideoYT instance to dictionary using field names"""
