@@ -8,6 +8,7 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from rich.prompt import Prompt
 from rich.console import Console
+from models import YTChannel, VideoYT
 
 
 def load_youtube_config(file_path: str) -> dict:
@@ -138,11 +139,9 @@ def add_channel_to_config(channel_id: str, channel_title: str, config_file: str)
     print(f"Added new channel: [{channel_title}] with ID: {channel_id}")
 
 
-def get_last_videos(channel_id, max_results=3) -> list[dict]:
-    """
-    Fetches the most recent videos from the specified YouTube channel.
-    Returns a list of dicts with 'title', 'video_id', 'published_at', 'url', and 'duration'.
-    """
+def get_last_videos(channel: YTChannel, max_results: int=3) -> list[VideoYT]:
+
+    videos: list[VideoYT] = []
 
     # Build the YouTube API service object
     youtube = build(
@@ -151,55 +150,52 @@ def get_last_videos(channel_id, max_results=3) -> list[dict]:
         developerKey=config.youtube_api_key
         )
 
-    activity_request = youtube.activities().list(
-        channelId=channel_id,
-        part='snippet,contentDetails,id',
-        maxResults=max_results,
-        # publishedAfter = 
+    playlist_request = youtube.playlistItems().list(
+        playlistId=channel.uploads_id,
+        part='snippet',
+        maxResults=max_results,  # Limit the number of results
     )
-    activity_response = activity_request.execute()
+    playlist_response = playlist_request.execute()
+    items = playlist_response['items']
 
-    videos = []
-    for item in activity_response.get('items', []):
-        if 'upload' in item['contentDetails']:
-            video_id = item['contentDetails']['upload']['videoId']
-            video_title = item['snippet']['title']
-            published_at_str = item['snippet']['publishedAt']
-            channel_id = item['snippet']['channelId']
-            channel_title = item['snippet']['channelTitle']
-        
-        elif item['snippet']['type'] == 'playlistItem':
-            video_id = item['contentDetails']['playlistItem']['resourceId']['videoId']
-            video_title = item['snippet']['title']
-            published_at_str = item['snippet']['publishedAt']
-            channel_id = item['snippet']['channelId']
-            channel_title = item['snippet']['channelTitle']
+    for item in items:
+        video_id = item['snippet']['resourceId']['videoId']
+        video_title = item['snippet']['title']
+        published_at_str = item['snippet']['publishedAt']
+        channel_id = item['snippet']['channelId']
+        channel_title = item['snippet']['channelTitle']
 
-            
-            # Construct URL
-            video_url = f"https://www.youtube.com/watch?v={video_id}"
+        # Construct URL
+        video_url = f"https://www.youtube.com/watch?v={video_id}"
 
-            published_at_dt = None
-            try:
-                # YouTube API returns ISO 8601 format (e.g., "2023-10-26T14:30:00Z")
-                # .replace('Z', '+00:00') is robust for Python versions < 3.11 with fromisoformat
-                if published_at_str.endswith('Z'):
-                    published_at_dt = datetime.fromisoformat(published_at_str.replace('Z', '+00:00'))
-                else:
-                    published_at_dt = datetime.fromisoformat(published_at_str)
-            except ValueError:
-                print(f"Warning: Could not parse date '{published_at_str}' for video ID '{video_id}'. Storing as string.")
-                published_at_dt = published_at_str # Fallback
+        published_at_dt = None
+        try:
+            # YouTube API returns ISO 8601 format (e.g., "2023-10-26T14:30:00Z")
+            # .replace('Z', '+00:00') is robust for Python versions < 3.11 with fromisoformat
+            if published_at_str.endswith('Z'):
+                published_at_dt = datetime.fromisoformat(published_at_str.replace('Z', '+00:00'))
+            else:
+                published_at_dt = datetime.fromisoformat(published_at_str)
+        except ValueError:
+            print(f"Warning: Could not parse date '{published_at_str}' for video ID '{video_id}'. Storing as string.")
+            published_at_dt = published_at_str # Fallback
 
-            videos.append({
-                'title': video_title,
-                'video_id': video_id,
-                'published_at': published_at_dt,
-                'channel_id': channel_id,
-                'channel_title': channel_title,
-                'url': video_url,
-            })
-            print(f"Title: {video_title}, URL: {video_url}")
+        # Append video details to the list
+        # Using VideoYT model for structured data
+        video_yt = VideoYT(
+            title=video_title,
+            video_id=video_id,
+            published_at=published_at_dt,
+            channel_id=channel_id,
+            channel_title=channel_title,
+            url=video_url,
+            # Duration can be fetched separately if needed
+        )
+        # Append to the list of videos
+        videos.append(video_yt)
+
+        # Print video details
+        print(f"Video ID: {video_id}, Title: {video_title}, Published At: {published_at_str}, Channel ID: {channel_id}, Channel Title: {channel_title}")
 
     return videos
 

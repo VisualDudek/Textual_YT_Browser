@@ -15,6 +15,30 @@ class Video:
     seen: bool = field(default=False)
 
 @dataclass
+class VideoYT:
+    title: str
+    video_id: str
+    published_at: datetime
+    channel_id: str
+    channel_title: str
+    url: str = field(default="N/A")
+    duration: str = field(default="N/A")
+    seen: bool = field(default=False)
+
+    def to_dict(self) -> Dict[str, str]:
+        """Convert VideoYT instance to dictionary"""
+        return {
+            'title': self.title,
+            'video_id': self.video_id,
+            'published_at': self.published_at,
+            'channel_id': self.channel_id,
+            'channel_title': self.channel_title,
+            'url': self.url,
+            'duration': self.duration,
+            'seen': self.seen,
+        }
+
+@dataclass
 class YTConfig:
     channels: Dict[str, str]
     results: int
@@ -25,3 +49,18 @@ class YTConfig:
         with open(file_path, 'r', encoding='utf-8') as file:
             data = yaml.safe_load(file)
         return cls(**data)
+    
+@dataclass
+class YTChannel:
+    channel_id: str
+    channel_title: str
+    uploads_id: str
+    
+    @classmethod
+    def from_dict(cls, data: Dict[str, str]) -> 'YTChannel':
+        """Create a YTChannel instance from a dictionary"""
+        return cls(
+            channel_id=data.get('channel_id', ''),
+            channel_title=data.get('channel_title', ''),
+            uploads_id=data.get('uploads_id', '')
+        )
