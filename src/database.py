@@ -62,10 +62,25 @@ class DatabaseService:
         video_collection = db[config.mongo_collection_name]
         
         video_collection.update_one(
-            {"_id": video_id},
+            {"video_id": video_id},
             {"$set": {"seen": seen_status}},
         )
+        self.disconnect()
+
+    def update_video_summary(self, video_id, summary: str):
+        """Update the summary of a video"""
+        self.connect()
         
+        db = self.client[config.mongo_database_name]
+        video_collection = db[config.mongo_collection_name]
+        
+        update_result = video_collection.update_one(
+            {"video_id": video_id},
+            {"$set": {
+                "summary": summary,
+                "has_summary": True
+                }},
+        )
         self.disconnect()
 
     def save_videos(self, videos: list[VideoYT]):
