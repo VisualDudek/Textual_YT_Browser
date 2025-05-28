@@ -12,7 +12,7 @@ from youtube import get_video_duration
 from widgets.summary_modalscreen import SummaryScreen
 from google_ai import get_summary_url
 from textual.worker import Worker, WorkerState
-from database import DatabaseService
+from database import DatabaseService, MongoDBAsyncClient
 
 
 class CustomDataTable(DataTable):
@@ -60,6 +60,9 @@ class CustomDataTable(DataTable):
 
     @on(Worker.StateChanged)
     def worker_state_changed(self, event: Worker.StateChanged):
+        if event.worker.group != "ai_summary":
+            return
+        """Handle state changes of the AI summary worker"""
         if event.state == WorkerState.SUCCESS:
             summary, video = event.worker.result
             self.app.notify(f"AI summary fetched successfully!\n{video.title}\nGroup: {event.worker.group}", title="Success")
@@ -130,15 +133,23 @@ class CustomDataTable(DataTable):
         video = self.videos[row]
         video.duration = get_video_duration(video)
 
-        info = f"Title: {video.title}\nPublished At: {video.published_at}\nDuration: {video.duration}\nSeen: {'Yes' if video.seen else 'No'}"
-        
-        self.app.notify(info, title="Video Information")
 
         # Refresh the table with updated duration
         self.update_cell(
             row_key=video.video_id,
             column_key="duration",
             value=video.duration)
+
+        # db_service = DatabaseService()
+        async_db_service = MongoDBAsyncClient()
+
+        self.run_worker(
+            async_db_service.update_video_duration(video.video_id, video.duration),
+            exclusive=False,
+        )
+
+        self.app.notify("Updated duration", title="Video Information")
+
 
     def action_style_row(self):
         """Toggle the seen status of the current row's video"""
