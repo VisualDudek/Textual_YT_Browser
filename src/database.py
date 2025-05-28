@@ -7,7 +7,45 @@ from models import Video, VideoYT
 from config import config
 import logging
 
+from pymongo import AsyncMongoClient
+
 logging.basicConfig(level=logging.INFO)
+
+class MongoDBAsyncClient:
+    def __init__(self):
+        self.client = None
+
+    async def connect(self) -> AsyncMongoClient:
+        """Establish asynchronous MongoDB connection"""
+        logging.info(f"Connecting to MongoDB at {config.mongo_uri}...")
+        self.client = AsyncMongoClient(
+            config.mongo_uri, 
+            serverSelectionTimeoutMS=config.connection_timeout_ms, 
+            server_api=ServerApi('1')
+        )
+        await self.client.admin.command('ping')
+        logging.info("Successfully connected to MongoDB.")
+        return self.client
+
+    async def disconnect(self):
+        """Close asynchronous MongoDB connection"""
+        if self.client:
+            await self.client.close()
+            logging.info("MongoDB connection closed.")
+
+    async def update_video_duration(self, video_id: str, duration: str):
+        """Update the duration of a video asynchronously"""
+        await self.connect()
+        
+        db = self.client[config.mongo_database_name]
+        video_collection = db[config.mongo_collection_name]
+
+        await video_collection.update_one(
+            {"video_id": video_id},
+            {"$set": {"duration": duration}},
+        )
+
+        await self.disconnect()
 
 class DatabaseService:
     def __init__(self):
@@ -64,6 +102,19 @@ class DatabaseService:
         video_collection.update_one(
             {"video_id": video_id},
             {"$set": {"seen": seen_status}},
+        )
+        self.disconnect()
+
+    async def update_video_duration(self, video_id, duration: str):
+        """Update the duration of a video"""
+        self.connect()
+        
+        db = self.client[config.mongo_database_name]
+        video_collection = db[config.mongo_collection_name]
+
+        video_collection.update_one(
+            {"video_id": video_id},
+            {"$set": {"duration": duration}},
         )
         self.disconnect()
 
