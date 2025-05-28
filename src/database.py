@@ -6,10 +6,14 @@ from typing import Dict, List
 from models import Video, VideoYT
 from config import config
 import logging
+from textual.logging import TextualHandler
 
 from pymongo import AsyncMongoClient
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(
+    level=logging.INFO,
+    handlers=[TextualHandler()],
+    )
 
 class MongoDBAsyncClient:
     def __init__(self):
