@@ -42,7 +42,11 @@ class CustomDataTable(DataTable):
             
         video = self.videos[row]
         # summary = await get_summary_url(video.url)
-        self.worker = self.run_worker(get_summary_url(video.url, video), exclusive=False)
+        self.worker = self.run_worker(
+            get_summary_url(video.url, video), 
+            group="ai_summary",
+            exclusive=False,
+            )
 
         # ----
         # video.summary = summary
@@ -58,7 +62,7 @@ class CustomDataTable(DataTable):
     def worker_state_changed(self, event: Worker.StateChanged):
         if event.state == WorkerState.SUCCESS:
             summary, video = event.worker.result
-            self.app.notify(f"AI summary fetched successfully!\n{video.title}", title="Success")
+            self.app.notify(f"AI summary fetched successfully!\n{video.title}\nGroup: {event.worker.group}", title="Success")
             
             db_service = DatabaseService()
             db_service.update_video_summary(video.video_id, summary)
