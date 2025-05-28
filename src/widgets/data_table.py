@@ -59,16 +59,6 @@ class CustomDataTable(DataTable):
         if event.state == WorkerState.SUCCESS:
             summary, video = event.worker.result
             self.app.notify(f"AI summary fetched successfully!\n{video.title}", title="Success")
-
-            # ----
-            # video = self.worker_video
-            # video.summary = summary
-            # video.has_summary = True
-            # # Refresh the table with updated summary
-            # self.update_cell(
-            #     row_key=video.video_id,
-            #     column_key="has_summary",
-            #     value=video.has_summary)
             
             db_service = DatabaseService()
             db_service.update_video_summary(video.video_id, summary)
