@@ -34,9 +34,14 @@ def get_initial_data() -> Dict[str, List[VideoYT]]:
     """Get initial data from pickle file or database"""
     from database import DatabaseService
 
-    file_path = Path(config.default_pickle_file)
-    if file_path.exists():
-        return load_pickle_data()
-    else:
-        db_service = DatabaseService()
-        return db_service.load_videos()
+    # Load data from pickle file is disabled
+    # as it is not used in the current implementation.
+    db_service = DatabaseService()
+    return db_service.load_videos()
+
+    # file_path = Path(config.default_pickle_file)
+    # if file_path.exists():
+    #     return load_pickle_data()
+    # else:
+    #     db_service = DatabaseService()
+    #     return db_service.load_videos()
