@@ -18,3 +18,9 @@ dependencies = [
 dev = [
     "textual-dev>=1.7.0",
 ]
+
+[project.scripts]
+update = "run_update_yt_db:main"
+
+[tool.uv]
+package = true
