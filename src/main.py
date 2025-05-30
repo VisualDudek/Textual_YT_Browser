@@ -34,7 +34,7 @@ class MyApp(App):
         list_view.index = 0
 
     def action_exit(self):
-        pickle_data(self.data)
+        # pickle_data(self.data)
         self.exit()
 
     def action_focus_datatable(self):
