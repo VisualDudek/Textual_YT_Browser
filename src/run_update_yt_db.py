@@ -12,7 +12,8 @@ def main():
 
         channel = YTChannel.from_dict(channel_data)
         videos = get_last_videos(channel, max_results=ytconfig.results)
-        dbservice.save_videos(videos)
+        # dbservice.save_videos(videos)
+        dbservice.save_videos_bulk(videos)
 
 
 if __name__ == "__main__":
