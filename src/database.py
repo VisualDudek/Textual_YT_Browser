@@ -9,6 +9,7 @@ import logging
 from textual.logging import TextualHandler
 
 from pymongo import AsyncMongoClient
+from pymongo.errors import DuplicateKeyError, BulkWriteError
 
 logging.basicConfig(
     level=logging.INFO,
@@ -154,4 +155,44 @@ class DatabaseService:
             except Exception as e:
                 print(f"An error occurred while saving video {video.title} to MongoDB: {e}")
 
+        self.disconnect()
+
+
+    def save_videos_bulk(self, videos: list[VideoYT]):
+        """Save video data to MongoDB using bulk insert"""
+        self.connect()
+    
+        db = self.client[config.mongo_database_name]
+        video_collection = db[config.mongo_collection_name]
+    
+        if not videos:
+            logging.info("No videos to save.")
+            self.disconnect()
+            return
+    
+        # Convert videos to dictionaries
+        video_docs = [video.to_dict() for video in videos]
+        
+        try:
+            # Use insert_many with ordered=False to continue on duplicates
+            result = video_collection.insert_many(video_docs, ordered=False)
+            logging.info(f"Successfully saved {len(result.inserted_ids)} videos to MongoDB")
+            
+        except BulkWriteError as e:
+            # Handle bulk write errors (including duplicates)
+            successful_inserts = e.details.get('nInserted', 0)
+            write_errors = e.details.get('writeErrors', [])
+            duplicate_errors = len([err for err in write_errors if err.get('code') == 11000])
+            
+            logging.info(f"Bulk insert completed: {successful_inserts} new videos saved, "
+                        f"{duplicate_errors} duplicates skipped")
+            
+            # Log other errors if any
+            other_errors = len(write_errors) - duplicate_errors
+            if other_errors > 0:
+                logging.warning(f"{other_errors} other write errors occurred")
+                
+        except Exception as e:
+            logging.error(f"An error occurred during bulk insert: {e}")
+            
         self.disconnect()
