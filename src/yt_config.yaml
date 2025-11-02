@@ -110,4 +110,16 @@ channels:
 - channel_id: UCMN0a7GHQnC6H74SmCGSmdw
   channel_title: You Suck at Programming
   uploads_id: UUMN0a7GHQnC6H74SmCGSmdw
+- channel_id: UCKSXs4jiLetyWsW5Lba3ZjQ
+  channel_title: marimo
+  uploads_id: UUKSXs4jiLetyWsW5Lba3ZjQ
+- channel_id: UCGKEMK3s-ZPbjVOIuAV8clQ
+  channel_title: Core Dumped
+  uploads_id: UUGKEMK3s-ZPbjVOIuAV8clQ
+- channel_id: UC98CzaYuFNAA_gOINFB0e4Q
+  channel_title: EuroPython Conference
+  uploads_id: UU98CzaYuFNAA_gOINFB0e4Q
+- channel_id: UCo71RUe6DX4w-Vd47rFLXPg
+  channel_title: typecraft
+  uploads_id: UUo71RUe6DX4w-Vd47rFLXPg
 results: 10
