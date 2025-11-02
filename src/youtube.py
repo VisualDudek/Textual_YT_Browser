@@ -107,7 +107,7 @@ def get_channel_id_from_video_url(video_url: str) -> tuple[str, str] | None:
 
         # Call the videos.list method to retrieve video info
         request = youtube.videos().list(
-            part="snippet",  # 'snippet' contains channelId, title, description, etc.
+            part="snippet,contentDetails",  # 'snippet' contains channelId, title, description, etc.
             id=video_id      # ID of the video to retrieve
         )
         response = request.execute()
@@ -145,19 +145,44 @@ def add_channel_to_config(channel_id: str, channel_title: str, config_file: str)
     """
     yt_config = load_youtube_config(config_file)
 
+    # Build list of existing channels list to check for duplicates
+    existing_channels = {item.get('channel_id') for item  in yt_config.get('channels', {})}
+
     # Check if the channel already exists
-    if channel_id in yt_config.get('channels', {}).values():
+    if channel_id in existing_channels:
         print(f"Channel ID {channel_id} [{channel_title}] already exists in the configuration.")
         return
+    
+    # Fetch uploads_id for the new channel
+    youtube = build(
+        config.youtube_api_service_name, 
+        config.youtube_api_version, 
+        developerKey=config.youtube_api_key
+    )
+
+    channel_request = youtube.channels().list(
+        id=channel_id,  # Tutaj jest możliwość podania kilku ID kanału
+        part='snippet,contentDetails',
+    )
+    channel_response = channel_request.execute()
+
+    uploads_id = channel_response['items'][0]['contentDetails']['relatedPlaylists']['uploads']
+    channel_title = channel_response['items'][0]['snippet']['title']
+
+    # Add the new channel to the existing configuration
+    new_channel = {
+        'channel_id': channel_id,
+        'channel_title': channel_title,
+        'uploads_id': uploads_id
+    }
+    
+    # Append to existing channels list
+    yt_config['channels'].append(new_channel)
+
+    # Save the updated config back to the YAML file (preserves all existing data)
+    save_youtube_config(config.yt_config_file, yt_config)
 
     # Add the new channel
-    yt_config.setdefault('channels', {})[channel_title] = channel_id
-
-    # Sort the channels alphabetically
-    yt_config['channels'] = dict(sorted(yt_config['channels'].items(), key=lambda item: item[0].lower()))
-
-    # Save the updated config back to the YAML file
-    save_youtube_config(config_file, yt_config)
     print(f"Added new channel: [{channel_title}] with ID: {channel_id}")
 
 
