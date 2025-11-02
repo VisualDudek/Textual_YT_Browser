@@ -23,6 +23,7 @@ class CustomDataTable(DataTable):
         Binding("i", "get_video_info", "Get video info", show=True),
         Binding("s", "display_summary", "Display summary", show=True),
         Binding("a", "get_ai_summary", "Get AI summary", show=True),
+        Binding("w", "show_worker_status", "Worker status", show=True),
     ]
 
     def __init__(self, **kwargs):
@@ -42,8 +43,9 @@ class CustomDataTable(DataTable):
             
         video = self.videos[row]
         # summary = await get_summary_url(video.url)
+        self.app.notify(f"Generating AI summary...\n{video.title}", title="Processing")
         self.worker = self.run_worker(
-            get_summary_url(video.url, video), 
+            get_summary_url(video.url, video),
             group="ai_summary",
             exclusive=False,
             )
@@ -169,6 +171,42 @@ class CustomDataTable(DataTable):
 
         # Refresh the table
         self.update_table(self.key, self.videos)
+
+    def action_show_worker_status(self):
+        """Show status of all workers, especially AI summary workers"""
+        # Get all workers
+        all_workers = list(self.app.workers)
+
+        # Filter AI summary workers
+        ai_workers = [
+            worker for worker in all_workers
+            if worker.group == "ai_summary"
+        ]
+
+        # Count states for AI workers
+        ai_pending = sum(1 for w in ai_workers if w.state == WorkerState.PENDING)
+        ai_running = sum(1 for w in ai_workers if w.state == WorkerState.RUNNING)
+        ai_success = sum(1 for w in ai_workers if w.state == WorkerState.SUCCESS)
+        ai_error = sum(1 for w in ai_workers if w.state == WorkerState.ERROR)
+        ai_cancelled = sum(1 for w in ai_workers if w.state == WorkerState.CANCELLED)
+
+        # Count total workers by state
+        total_pending = sum(1 for w in all_workers if w.state == WorkerState.PENDING)
+        total_running = sum(1 for w in all_workers if w.state == WorkerState.RUNNING)
+
+        # Build notification message
+        message = f"AI Summary Workers:\n"
+        message += f"  Pending: {ai_pending}\n"
+        message += f"  Running: {ai_running}\n"
+        message += f"  Success: {ai_success}\n"
+        message += f"  Error: {ai_error}\n"
+        message += f"  Cancelled: {ai_cancelled}\n"
+        message += f"\nTotal Workers:\n"
+        message += f"  Pending: {total_pending}\n"
+        message += f"  Running: {total_running}\n"
+        message += f"  Total Active: {len(all_workers)}"
+
+        self.app.notify(message, title="Worker Status")
 
     @on(DataTable.RowSelected)
     def open_url_in_browser(self, event: DataTable.RowSelected):
