@@ -122,4 +122,16 @@ channels:
 - channel_id: UCo71RUe6DX4w-Vd47rFLXPg
   channel_title: typecraft
   uploads_id: UUo71RUe6DX4w-Vd47rFLXPg
+- channel_id: UCjS2aGCvsnhExcWRAI8T4Pw
+  channel_title: GynvaelColdwind
+  uploads_id: UUjS2aGCvsnhExcWRAI8T4Pw
+- channel_id: UCCkVMojdBWS-JtH7TliWkVg
+  channel_title: GynvaelEN
+  uploads_id: UUCkVMojdBWS-JtH7TliWkVg
+- channel_id: UCKPSmMfDsXTKrCZApukcJ7A
+  channel_title: Talk Python
+  uploads_id: UUKPSmMfDsXTKrCZApukcJ7A
+- channel_id: UCK_eZkV9CYCxhdf9f0dEukA
+  channel_title: Python Bytes Podcast
+  uploads_id: UUK_eZkV9CYCxhdf9f0dEukA
 results: 10
