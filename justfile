@@ -7,3 +7,8 @@ _default:
 [doc("Start the Textual app")]
 app:
 	uv run main
+
+[group("Start App")]
+[doc("Add YT channel based on provided YT url")]
+add:
+	uv run ./src/youtube.py
