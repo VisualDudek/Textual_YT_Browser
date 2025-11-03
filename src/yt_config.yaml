@@ -134,4 +134,7 @@ channels:
 - channel_id: UCK_eZkV9CYCxhdf9f0dEukA
   channel_title: Python Bytes Podcast
   uploads_id: UUK_eZkV9CYCxhdf9f0dEukA
+- channel_id: UCrqM0Ym_NbK1fqeQG2VIohg
+  channel_title: Tsoding Daily
+  uploads_id: UUrqM0Ym_NbK1fqeQG2VIohg
 results: 10
