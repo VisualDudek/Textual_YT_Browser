@@ -157,11 +157,11 @@ class CustomDataTable(DataTable):
         """Toggle the seen status of the current row's video"""
         if not self.videos:
             return
-            
+
         row = self.cursor_row
         if row >= len(self.videos):
             return
-            
+
         video = self.videos[row]
         video.seen = not video.seen
 
@@ -171,6 +171,9 @@ class CustomDataTable(DataTable):
 
         # Refresh the table
         self.update_table(self.key, self.videos)
+
+        # Restore cursor position
+        self.move_cursor(row=row)
 
     def action_show_worker_status(self):
         """Show status of all workers, especially AI summary workers"""
