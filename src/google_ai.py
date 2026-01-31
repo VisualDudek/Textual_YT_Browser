@@ -33,13 +33,14 @@ Focus: Do not include personal opinions, external information, or interpretation
 
 url = "https://youtu.be/bwz3Z9GXLyI?si=-pr157wnyggKjwxL"
 
-async def get_summary_url(url: str, payload) -> str:
 
+async def get_summary_url(url: str, payload) -> str:
     PROMPT = PROMPT_01 + PROMPT_02
 
     client = genai.Client(api_key=config.google_ai_api_key)
-    model = "gemini-2.0-flash",
-    model = "gemini-2.5-flash-preview-05-20"
+    # model = "gemini-2.0-flash"
+    # model = "gemini-2.5-flash-preview-05-20"
+    model = "gemini-3-flash-preview"
 
     response = await client.aio.models.generate_content(
         model=model,
@@ -50,9 +51,9 @@ async def get_summary_url(url: str, payload) -> str:
                 ),
                 types.Part(
                     text=PROMPT,
-                )
+                ),
             ]
-        )
+        ),
     )
 
     return (response.text, payload)
