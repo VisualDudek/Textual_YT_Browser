@@ -5,7 +5,7 @@ _default:
 
 [group("Start App")]
 [doc("Start the Textual app")]
-app:
+run:
 	uv run main
 
 [group("Start App")]
