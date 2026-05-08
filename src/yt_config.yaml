@@ -164,4 +164,7 @@ channels:
 - channel_id: UCDjemId3sKv5y7MuaClW_3Q
   channel_title: "Micha\u0142 Tekieli"
   uploads_id: UUDjemId3sKv5y7MuaClW_3Q
+- channel_id: UCP07WTRq6Qx4eREw4IfCigw
+  channel_title: MongoDB for Developers
+  uploads_id: UUP07WTRq6Qx4eREw4IfCigw
 results: 10
